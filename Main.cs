@@ -27,13 +27,10 @@ namespace OOPSeminar
 		private void LoadProcesses()
 		{
 			try
-			{
-				dataGridViewProcesses.AutoGenerateColumns = false;
-				dataGridViewProcesses.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-				dataGridViewProcesses.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-                dataGridViewProcesses.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            {
                 var processes = processService.GetProcesses();
 				bool showMb = FormatCheckbox.Checked;
+                bool sortbyPID = SortCheckbox.Checked;
 
 				foreach (var p in processes)
 				{
@@ -41,11 +38,8 @@ namespace OOPSeminar
 					p.MemoryShow = Formatting.FormatBytes(p.Memory, showMb);
 					p.ResponseShow = Formatting.FormatResponse(p.Responding);
 				}
-
-				if(processService.sort_checked == true)
-				{
-					processes = Formatting.SortProcesses(processes);
-                }
+                if(sortbyPID)
+				    processes = Formatting.SortProcesses(processes, sortbyPID);
 				dataGridViewProcesses.DataSource = processes;
 			}
 			catch
@@ -53,28 +47,17 @@ namespace OOPSeminar
 				MessageBox.Show("Neuspješno učitavanje procesa.\n", "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
-        private void SortCheckbox_CheckedChanged(object sender, EventArgs e)
-        {
-			if (SortCheckbox.Checked == false)
-			{
-				processService.sort_checked = false;
-			}
-			else if (SortCheckbox.Checked == true)
-			{
-				processService.sort_checked = true;
-			}
-        }
         private void RefreshProcesses_Click(object sender, EventArgs e)
         {
-            processService.clicked = false;
+            processService.loaded_file = false;
             LoadProcesses();
         }
 
         private void KillProcess_Click(object sender, EventArgs e)
         {
-            if (processService.clicked == true)
+            if (processService.loaded_file == true)
             {
-                MessageBox.Show("Trenutno pregledavate procese. Kliknite osvježi za ovu opciju.\n", "Greška", MessageBoxButtons.OK);
+                MessageBox.Show("Trenutno pregledavate procese iz datoteke. Kliknite osvježi za korištenje ove opcije.\n", "Greška", MessageBoxButtons.OK);
                 return;
             }
             if (dataGridViewProcesses.SelectedRows.Count == 0)
@@ -107,7 +90,7 @@ namespace OOPSeminar
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 var procesi = processService.GetProcesses();
-                processService.SaveProcessesToFile(procesi, dialog.FileName);
+                processService.SaveProcessesToFile(procesi, dialog.FileName, SortCheckbox.Checked);
 
                 MessageBox.Show("Procesi uspješno spremljeni.\n");
             }
@@ -115,7 +98,7 @@ namespace OOPSeminar
 
         private void LoadFile_Click(object sender, EventArgs e)
         {
-            processService.clicked = true;
+            processService.loaded_file = true;
             var dialog = new OpenFileDialog();
             dialog.Filter = "TXT datoteke (*.txt)|*.txt";
             dialog.Title = "Učitaj datoteku";
@@ -132,6 +115,7 @@ namespace OOPSeminar
                 }
 
                 dataGridViewProcesses.DataSource = processes;
+                MessageBox.Show("Procesi uspješno učitani.\n");
             }
         }
     }

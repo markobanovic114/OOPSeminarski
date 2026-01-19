@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using OOPSeminar.Model;
+using OOPSeminar.Format;
 
 
 namespace OOPSeminar.Services
@@ -15,17 +16,17 @@ namespace OOPSeminar.Services
 	{
 		public List<ProcessInfo> GetProcesses()
 		{
-			var result = new List<ProcessInfo>(); ;
+			var result = new List<ProcessInfo>();
 
 			foreach (var process in Process.GetProcesses())
 			{
-                string Path = "Pristup zabranjen.";
+				string Path = "Pristup zabranjen.";
 				try
 				{
 					Path = process.MainModule.FileName;
 				}
 				catch { }
-                try
+				try
 				{
 					result.Add(new ProcessInfo
 					{
@@ -38,8 +39,8 @@ namespace OOPSeminar.Services
 				}
 				catch
 				{
-					MessageBox.Show($"Greška u dobavljanju procesa PID-a {PID}\n", "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				}
+                    MessageBox.Show($"Greška u dobavljanju procesa PID-a {PID}\n", "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
 			}
 
 			return result;
@@ -58,10 +59,12 @@ namespace OOPSeminar.Services
 			}
 		}
 
-		public void SaveProcessesToFile(List<ProcessInfo> processes, string filePath)
+		public void SaveProcessesToFile(List<ProcessInfo> processes, string filePath, bool sort_checked)
 		{
 			var sb = new StringBuilder();
 			sb.AppendLine("Name, PID, Memory, Responding, Path");
+			if (sort_checked)
+				processes = Formatting.SortProcesses(processes, sort_checked);
 
 			foreach (var p in processes)
 			{
@@ -70,14 +73,14 @@ namespace OOPSeminar.Services
 			File.WriteAllText(filePath, sb.ToString());
 		}
 
-        public List<ProcessInfo> LoadProcessesFromFile(string filePath)
-        {
-            var result = new List<ProcessInfo>();
-            var lines = File.ReadAllLines(filePath);
+		public List<ProcessInfo> LoadProcessesFromFile(string filePath)
+		{
+			var result = new List<ProcessInfo>();
+			var lines = File.ReadAllLines(filePath);
 
-            for (int i = 1; i < lines.Length; i++)
-            {
-                var parts = lines[i].Split(',');
+			for (int i = 1; i < lines.Length; i++)
+			{
+				var parts = lines[i].Split(',');
 
 				result.Add(new ProcessInfo
 				{
@@ -87,10 +90,9 @@ namespace OOPSeminar.Services
 					Responding = bool.Parse(parts[3]),
 					Path = parts[4]
 				});
-            }
+			}
 
-            return result;
-        }
-
-    }
+			return result;
+		}
+	}
 }

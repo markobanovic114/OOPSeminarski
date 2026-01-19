@@ -65,6 +65,8 @@ namespace OOPSeminar
             this.dataGridViewProcesses.Name = "dataGridViewProcesses";
             this.dataGridViewProcesses.Size = new System.Drawing.Size(699, 389);
             this.dataGridViewProcesses.TabIndex = 7;
+            this.dataGridViewProcesses.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridViewProcesses.AutoGenerateColumns = false;
             // 
             // FormatCheckbox
             // 
@@ -88,7 +90,6 @@ namespace OOPSeminar
             this.SortCheckbox.TabIndex = 6;
             this.SortCheckbox.Text = "Sortirano po PID-u";
             this.SortCheckbox.UseVisualStyleBackColor = false;
-            this.SortCheckbox.CheckedChanged += new System.EventHandler(this.SortCheckbox_CheckedChanged);
             // 
             // menuStrip1
             // 
