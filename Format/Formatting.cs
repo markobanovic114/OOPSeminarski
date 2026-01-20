@@ -1,10 +1,13 @@
-﻿using System;
+﻿using OOPSeminar.Model;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics.Eventing.Reader;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using OOPSeminar.Model;
+using System.Windows.Forms;
 
 namespace OOPSeminar.Format
 {
@@ -45,5 +48,35 @@ namespace OOPSeminar.Format
 		{
 			return x.PID.CompareTo(y.PID);
 		}
-	}
+
+		public static void FormatCellsMemory(object sender, DataGridViewCellFormattingEventArgs e, ProcessInfo process)
+		{
+            long memoryMb = process.Memory / (1024 * 1024);
+
+            if (memoryMb < 100)
+            {
+                e.CellStyle.BackColor = Color.LightGreen;
+            }
+            else if (memoryMb < 500)
+            {
+                e.CellStyle.BackColor = Color.Khaki;
+            }
+            else
+            {
+                e.CellStyle.BackColor = Color.LightCoral;
+            }
+        }
+
+        public static void FormatCellsResponse(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.Value?.ToString() == "Proces radi pravilno.")
+            {
+                e.CellStyle.BackColor = Color.LightGreen;
+            }
+            else
+            {
+                e.CellStyle.BackColor = Color.LightCoral;
+            }
+        }
+    }
 }

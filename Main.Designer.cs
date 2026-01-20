@@ -34,6 +34,11 @@ namespace OOPSeminar
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.dataGridViewProcesses = new System.Windows.Forms.DataGridView();
+            this.colName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colPID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMemory = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colResponding = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colPath = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.FormatCheckbox = new System.Windows.Forms.CheckBox();
             this.SortCheckbox = new System.Windows.Forms.CheckBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -41,17 +46,13 @@ namespace OOPSeminar
             this.KillProcess = new System.Windows.Forms.ToolStripMenuItem();
             this.SaveFile = new System.Windows.Forms.ToolStripMenuItem();
             this.LoadFile = new System.Windows.Forms.ToolStripMenuItem();
-            this.colName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colPID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colMemory = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colResponding = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colPath = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewProcesses)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // dataGridViewProcesses
             // 
+            this.dataGridViewProcesses.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridViewProcesses.BackgroundColor = System.Drawing.SystemColors.HotTrack;
             this.dataGridViewProcesses.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dataGridViewProcesses.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -63,10 +64,40 @@ namespace OOPSeminar
             this.colPath});
             this.dataGridViewProcesses.Location = new System.Drawing.Point(12, 12);
             this.dataGridViewProcesses.Name = "dataGridViewProcesses";
+            this.dataGridViewProcesses.AutoGenerateColumns = false;
             this.dataGridViewProcesses.Size = new System.Drawing.Size(699, 389);
             this.dataGridViewProcesses.TabIndex = 7;
-            this.dataGridViewProcesses.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridViewProcesses.AutoGenerateColumns = false;
+            this.dataGridViewProcesses.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridViewProcesses_CellFormatting);
+            // 
+            // colName
+            // 
+            this.colName.DataPropertyName = "Name";
+            this.colName.HeaderText = "Ime Procesa";
+            this.colName.Name = "colName";
+            // 
+            // colPID
+            // 
+            this.colPID.DataPropertyName = "PID";
+            this.colPID.HeaderText = "PID";
+            this.colPID.Name = "colPID";
+            // 
+            // colMemory
+            // 
+            this.colMemory.DataPropertyName = "MemoryShow";
+            this.colMemory.HeaderText = "Korištenje memorije";
+            this.colMemory.Name = "colMemory";
+            // 
+            // colResponding
+            // 
+            this.colResponding.DataPropertyName = "ResponseShow";
+            this.colResponding.HeaderText = "Ispravnost";
+            this.colResponding.Name = "colResponding";
+            // 
+            // colPath
+            // 
+            this.colPath.DataPropertyName = "Path";
+            this.colPath.HeaderText = "Put do datoteke";
+            this.colPath.Name = "colPath";
             // 
             // FormatCheckbox
             // 
@@ -140,40 +171,8 @@ namespace OOPSeminar
             this.LoadFile.Text = "Učitaj datoteku";
             this.LoadFile.Click += new System.EventHandler(this.LoadFile_Click);
             // 
-            // colName
-            // 
-            this.colName.DataPropertyName = "Name";
-            this.colName.HeaderText = "Ime Procesa";
-            this.colName.Name = "colName";
-            // 
-            // colPID
-            // 
-            this.colPID.DataPropertyName = "PID";
-            this.colPID.HeaderText = "PID";
-            this.colPID.Name = "colPID";
-            // 
-            // colMemory
-            // 
-            this.colMemory.DataPropertyName = "MemoryShow";
-            this.colMemory.HeaderText = "Korištenje memorije";
-            this.colMemory.Name = "colMemory";
-            // 
-            // colResponding
-            // 
-            this.colResponding.DataPropertyName = "ResponseShow";
-            this.colResponding.HeaderText = "Ispravnost";
-            this.colResponding.Name = "colResponding";
-            this.colResponding.Width = 140;
-            // 
-            // colPath
-            // 
-            this.colPath.DataPropertyName = "Path";
-            this.colPath.HeaderText = "Put do datoteke";
-            this.colPath.Name = "colPath";
-            // 
             // Main
             // 
-            this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.HotTrack;
@@ -182,6 +181,7 @@ namespace OOPSeminar
             this.Controls.Add(this.FormatCheckbox);
             this.Controls.Add(this.dataGridViewProcesses);
             this.Controls.Add(this.menuStrip1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Main";
